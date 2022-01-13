@@ -1,0 +1,15 @@
+.container{
+    margin: 60px;
+}
+
+h1{
+    font-size: 80px;
+}
+
+.detailText{
+    margin-top: -4px;
+}
+
+.highlight{
+    font-size: 80px;
+}
