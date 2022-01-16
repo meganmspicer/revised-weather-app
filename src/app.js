@@ -25,6 +25,7 @@ function reportTemp(response) {
     "src",
     `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
   );
+  icon.setAttribute("alt", `${response.data.weather[0].description}`);
   getForecast(response.data.coord);
 }
 
@@ -56,16 +57,18 @@ function displayForecast(response) {
         `         
          <div class="col-2" id="forecast">
             <div class="forecastDate">${formatForecastDay(forecastDay.dt)}</div>
-            <div class="forecastIcon"> <img src="http://openweathermap.org/img/wn/${
+            <div> <img src="http://openweathermap.org/img/wn/${
               forecastDay.weather[0].icon
-            }@2x.png" alt=""> </div>
+            }@2x.png" alt="${
+          forecastDay.weather[0].description
+        }" width="50px" class="forecastIcon"> </div>
             <div class="forecastTemps"> 
               <span class="forecastTempsMax">${Math.round(
                 forecastDay.temp.max
-              )}</span>
-              <span class"forecastTempsMin>${Math.round(
+              )}°</span>
+              <span class="forecastTempsMin">${Math.round(
                 forecastDay.temp.min
-              )} </span> 
+              )}°</span> 
             </div>
           </div>`;
     }

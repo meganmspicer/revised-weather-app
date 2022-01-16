@@ -10,7 +10,21 @@ h1 {
   margin-top: -4px;
 }
 
-.forecastTempsMin {
+.forecastDate {
+  text-align: center;
+}
+
+.forecastIcon {
+  display: block;
+  margin: 0 auto;
+}
+
+.forecastTemps {
+  text-align: center;
+}
+.forecastTempsMin,
+.secondaryDetails,
+.date {
   color: grey;
 }
 
@@ -20,4 +34,8 @@ h1 {
 
 .highlight {
   font-size: 80px;
+}
+
+.icon {
+  width: 100px;
 }
