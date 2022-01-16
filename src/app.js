@@ -18,6 +18,7 @@ function reportTemp(response) {
   temp = Math.round(response.data.main.temp);
   temperature.innerHTML = temp;
   cityName.innerHTML = response.data.name;
+  description.innerHTML = response.data.weather[0].description;
   humidity.innerHTML = response.data.main.humidity;
   wind.innerHTML = response.data.wind.speed;
   //   if (response.data.weather[0].description === "overcast clouds") {
@@ -30,7 +31,7 @@ function reportTemp(response) {
 }
 
 function getForecast(coordinates) {
-  let apiURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude={part}&appid=${apiKey}&unit=metric`;
+  let apiURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude={part}&appid=${apiKey}&units=metric`;
   console.log(apiURL);
   axios.get(apiURL).then(displayForecast);
 }
@@ -46,30 +47,43 @@ function useCurrentLocation(position) {
 }
 
 function displayForecast(response) {
-  console.log(response.data);
+  console.log(response.data.daily);
+  let forecast = response.data.daily;
   let forecastElement = document.querySelector("#forecast");
-  let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
   let forecastHTML = "";
-  days.forEach(function (day) {
-    forecastHTML =
-      forecastHTML +
-      `         
+  forecast.forEach(function (forecastDay, index) {
+    if (index < 6) {
+      forecastHTML =
+        forecastHTML +
+        `         
          <div class="col-2" id="forecast">
-            <div class="forecastDate">${day}</div>
+            <div class="forecastDate">${formatForecastDay(forecastDay.dt)}</div>
             <div class="forecastIcon">🌧 </div>
             <div class="forecastTemps"> 
-              <span class="forecastTempsMax">6*</span>
-              <span> | </span>
-              <span class"forecastTempsMin>  2* </span> 
+              <span class="forecastTempsMax">${Math.round(
+                forecastDay.temp.max
+              )}</span>
+              <span class"forecastTempsMin>${Math.round(
+                forecastDay.temp.min
+              )} </span> 
             </div>
           </div>`;
+    }
   });
+
+  function formatForecastDay(timestamp) {
+    let forecastDate = new Date(timestamp * 1000);
+    let forecastDay = forecastDate.getDay();
+
+    return days[forecastDay];
+  }
 
   forecastElement.innerHTML = forecastHTML;
 }
 
 let currentLocationButton = document.querySelector("#currentLocation");
 let date = document.querySelector("#date");
+let description = document.querySelector("#description");
 let submitButton = document.querySelector("#submit-button");
 let searchBox = document.querySelector("#search-box");
 let cityName = document.querySelector("#city-name");
@@ -82,28 +96,20 @@ var wind = document.querySelector("#wind");
 var icon = document.querySelector("#icon");
 let currentDate = new Date();
 let months = [
-  "January",
-  "February",
-  "March",
-  "April",
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
   "May",
   "June",
   "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
-let days = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
+let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 date.innerHTML = formatDate();
 submitButton.addEventListener("click", submitForm);

@@ -10,6 +10,14 @@ h1 {
   margin-top: -4px;
 }
 
+.forecastTempsMin {
+  color: grey;
+}
+
+#description {
+  text-transform: capitalize;
+}
+
 .highlight {
   font-size: 80px;
 }
