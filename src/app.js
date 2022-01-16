@@ -13,8 +13,13 @@ function submitForm(event) {
   let endpoint = `https://api.openweathermap.org/data/2.5/weather?q=${newCity}&appid=${apiKey}&units=metric`;
   axios.get(endpoint).then(reportTemp);
 }
+
+function pageLoad() {
+  let endpoint = `https://api.openweathermap.org/data/2.5/weather?q=Toronto&appid=${apiKey}&units=metric`;
+  axios.get(endpoint).then(reportTemp);
+}
+
 function reportTemp(response) {
-  console.log(response.data);
   temp = Math.round(response.data.main.temp);
   temperature.innerHTML = temp;
   cityName.innerHTML = response.data.name;
@@ -31,8 +36,13 @@ function reportTemp(response) {
 
 function getForecast(coordinates) {
   let apiURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude={part}&appid=${apiKey}&units=metric`;
-  console.log(apiURL);
   axios.get(apiURL).then(displayForecast);
+}
+
+function getLocation() {
+  event.preventDefault();
+  console.log("called");
+  navigator.geolocation.getCurrentPosition(useCurrentLocation);
 }
 
 function useCurrentLocation(position) {
@@ -46,7 +56,6 @@ function useCurrentLocation(position) {
 }
 
 function displayForecast(response) {
-  console.log(response.data.daily);
   let forecast = response.data.daily;
   let forecastElement = document.querySelector("#forecast");
   let forecastHTML = "";
@@ -114,7 +123,8 @@ let months = [
 ];
 let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+pageLoad();
+
 date.innerHTML = formatDate();
 submitButton.addEventListener("click", submitForm);
-currentLocationButton.addEventListener("click", useCurrentLocation);
-navigator.geolocation.getCurrentPosition(useCurrentLocation);
+currentLocationButton.addEventListener("click", getLocation);
