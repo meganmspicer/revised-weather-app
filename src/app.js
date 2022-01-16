@@ -21,12 +21,10 @@ function reportTemp(response) {
   description.innerHTML = response.data.weather[0].description;
   humidity.innerHTML = response.data.main.humidity;
   wind.innerHTML = response.data.wind.speed;
-  //   if (response.data.weather[0].description === "overcast clouds") {
-  //     icon.innerHTML = "🌧";
-  //   } else {
-  //   }
-  //   icon.innerHTML = "☁️";
-
+  icon.setAttribute(
+    "src",
+    `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
+  );
   getForecast(response.data.coord);
 }
 
@@ -58,7 +56,9 @@ function displayForecast(response) {
         `         
          <div class="col-2" id="forecast">
             <div class="forecastDate">${formatForecastDay(forecastDay.dt)}</div>
-            <div class="forecastIcon">🌧 </div>
+            <div class="forecastIcon"> <img src="http://openweathermap.org/img/wn/${
+              forecastDay.weather[0].icon
+            }@2x.png" alt=""> </div>
             <div class="forecastTemps"> 
               <span class="forecastTempsMax">${Math.round(
                 forecastDay.temp.max
